@@ -11,6 +11,7 @@ endif
 SWAY_VERSION ?= master
 WLROOTS_VERSION ?= master
 KANSHI_VERSION ?= master
+GRIM_VERSION ?= master
 WAYBAR_VERSION ?= master
 SWAYLOCK_VERSION ?= master
 MAKO_VERSION ?= master
@@ -155,7 +156,7 @@ check-ubuntu-version:
 ## Meta installation targets
 yolo: install-dependencies install-repos core apps
 core: seatd-build wlroots-build sway-build
-apps: kanshi-build waybar-build swaylock-build mako-build wf-recorder-build clipman-build wofi-build nwg-panel-install swayimg-build
+apps: kanshi-build grim-build waybar-build swaylock-build mako-build wf-recorder-build clipman-build wofi-build nwg-panel-install swayimg-build
 wf: wf-config-build wayfire-build wf-shell-build wcm-build
 
 ## Build dependencies
@@ -178,6 +179,7 @@ install-repos:
 	@hg clone https://hg.sr.ht/~scoopta/wofi || echo "Already installed"
 	@git clone https://git.sr.ht/~kennylevinsen/seatd || echo "Already installed"
 	@git clone https://github.com/artemsen/swayimg.git || echo "Already installed"
+	@git clone https://github.com/emersion/grim.git || echo "Already installed"
 
 install-dependencies: wayland-protocols-1.23
 	sudo apt -y install --no-install-recommends \
@@ -220,6 +222,9 @@ sway-build:
 	sudo cp -f $(PWD)/sway/contrib/grimshot /usr/local/bin/
 
 ## Apps
+grim-build:
+	make meson-ninja-build -e APP_FOLDER=grim -e APP_VERSION=$(GRIM_VERSION)
+
 kanshi-build:
 	make meson-ninja-build -e APP_FOLDER=kanshi -e APP_VERSION=$(KANSHI_VERSION)
 
